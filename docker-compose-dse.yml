@@ -1,0 +1,113 @@
+# Remarks
+# 1. Run first docker pull datastax/dse-server:6.8.9
+#
+version: '3'
+services:
+    DC1N1:
+        image: datastax/dse-server:6.8.9
+        command: -k
+        networks:
+            - dc1ring
+        volumes:
+            - ./n1data:/var/lib/cassandra
+            - ./n1data:/var/lib/spark
+            - ./n1log:/var/log/cassandra
+            - ./n1log:/var/log/spark
+        environment:
+            - CLUSTER_NAME=data_warehouses
+            - SEEDS=DC1N1
+            - DS_LICENSE=accept
+        expose:
+            # Intra-node communication
+            - 7000
+            # TLS intra-node communication
+            - 7001
+            # JMX
+            - 7199
+            # CQL
+            - 9042
+            # Thrift service
+            - 9160
+            # Spark
+            - 7077
+        # Allow DSE to lock memory with mlock
+        cap_add:
+        - IPC_LOCK            
+        ulimits:
+            memlock: -1
+        ports:
+            # Spark Master UI
+            - "9090:7080"
+            # Cassandra CQL
+            - "9042:9042"
+    DC1N2:
+        image: datastax/dse-server:6.8.9
+        command: -k
+        networks:
+            - dc1ring
+        volumes:
+            - ./n2data:/var/lib/cassandra
+            - ./n2data:/var/lib/spark
+            - ./n2log:/var/log/cassandra
+            - ./n2log:/var/log/spark            
+        environment:
+            - CLUSTER_NAME=data_warehouses
+            - SEEDS=DC1N1
+            - DS_LICENSE=accept
+        depends_on:
+          - DC1N1
+        expose:
+            # Intra-node communication
+            - 7000
+            # TLS intra-node communication
+            - 7001
+            # JMX
+            - 7199
+            # CQL
+            - 9042
+            # Thrift service
+            - 9160
+            # Spark
+            - 7077    
+        # Allow DSE to lock memory with mlock
+        cap_add:
+        - IPC_LOCK            
+        ulimits:
+            memlock: -1
+    DC1N3:
+        image: datastax/dse-server:6.8.9
+        command: -k
+        networks:
+            - dc1ring
+        volumes:
+            - ./n3data:/var/lib/cassandra
+            - ./n3data:/var/lib/spark
+            - ./n3log:/var/log/cassandra
+            - ./n3log:/var/log/spark            
+        environment:
+            - CLUSTER_NAME=data_warehouses
+            - SEEDS=DC1N1
+            - DS_LICENSE=accept
+        depends_on:
+          - DC1N1
+        expose:
+            # Intra-node communication
+            - 7000
+            # TLS intra-node communication
+            - 7001
+            # JMX
+            - 7199
+            # CQL
+            - 9042
+            # Thrift service
+            - 9160
+            # Spark
+            - 7077 
+        # Allow DSE to lock memory with mlock
+        cap_add:
+        - IPC_LOCK
+        ulimits:
+            memlock: -1
+                  
+networks:
+    dc1ring:

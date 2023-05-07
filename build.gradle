@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.2"
+    }
+}
+
+// Once we apply the Shadow plugin, the shadowJar task will be ready to use
+// to build a self-contained (fat) jar using gradlew build shadowJar
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+group 'data-warehouse-starter'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.17
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    implementation 'com.datastax.oss:java-driver-core:4.15.0'
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.5'
+    implementation 'org.springframework.boot:spring-boot-starter-data-cassandra:3.0.5'
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.5'
+
+    implementation 'com.jimmoores:quandl-core:2.2.1'
+    implementation 'com.jimmoores:quandl-tablesaw:2.2.1'
+    // https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+
+}
