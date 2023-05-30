@@ -9,6 +9,7 @@ import ro.uvt.info.dw.Repository.AssetRepository;
 import ro.uvt.info.dw.Services.AssetService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/asset")
@@ -42,18 +43,6 @@ public class AssetController {
         return assetFetchedList;
     }
 
-    @GetMapping("/get-asset-by-id/{id}")
-    public List<Asset> getAssetById(@PathVariable("id") int id) {
-        List<Asset> assetData = assetRepository.findById(id);
-        return assetData;
-    }
-
-    @GetMapping("/get-paginated-results")
-    public List<Asset> getAssetBetweenIdRange() {
-        List<Asset> assetData = assetRepository.findPaginatedResults(9,20);
-        return assetData;
-    }
-
     @PostMapping("/create-asset")
     public Asset createAsset(@RequestBody Asset asset) {
         assetRepository.save(asset);
@@ -62,9 +51,9 @@ public class AssetController {
     }
 
     @DeleteMapping("/delete-asset-by-id/{id}")
-    public void deleteAssetById(@PathVariable("id") Integer id) {
-        assetRepository.deleteById(id);
-        System.out.println("Deleted asset entry with id: " + id);
+    public void deleteAssetById(@PathVariable("id") String name) {
+        assetRepository.deleteById(name);
+        System.out.println("Deleted asset entry with id: " + name);
     }
 
     @DeleteMapping("/delete-all-assets")
@@ -79,16 +68,20 @@ public class AssetController {
     }
 
     @PostMapping("/load-quandl-data")
-    public void injectQuandlData() {
-        List<Asset> assetExtractedQuandlData = quandlService.transformAssetData();
-        System.out.println(assetExtractedQuandlData);
-        assetRepository.saveAll(assetExtractedQuandlData);
+    public void injectQuandlData(@RequestParam(required = false) String stockLabel) {
+        quandlService.transformAndSaveAsset(stockLabel);
+        System.out.println("Data imported successfully for " + stockLabel);
     }
-//
-//    @GetMapping("/asset/{limit}{offset}")
-//    public List<Asset> getPaginatedAssets(@PathVariable(value="limit") int limit,
-//                                          @PathVariable(value="offset") int offset){
-//
-//    }
+
+    @GetMapping("/getPaginatedAssets")
+    public List<String> getPaginatedAssets(@RequestParam(required = false) Optional<Integer> offset,
+                          @RequestParam(required = false) Optional<Integer> limit) {
+        return assetService.getPaginatedAssets(offset, limit);
+    }
+
+    @GetMapping("/getLatestAssetByName")
+    public Asset getLatestAssetByName(@RequestParam(required = true) String requestedName){
+        return assetService.getLatestAssetByName(requestedName);
+    }
 
 }

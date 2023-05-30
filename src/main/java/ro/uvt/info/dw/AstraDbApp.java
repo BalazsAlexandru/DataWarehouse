@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.nio.file.Path;
 
-@SpringBootApplication
+@SpringBootApplication()
 @EnableConfigurationProperties(DataStaxAstraProperties.class)
 public class AstraDbApp {
 

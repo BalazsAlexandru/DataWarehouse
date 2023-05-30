@@ -10,7 +10,6 @@ import java.util.Set;
 public class DataSource {
 
     @PrimaryKey
-    private int id;
     private String name;
     private String description;
     private Timestamp system_date;
@@ -20,19 +19,10 @@ public class DataSource {
     }
 
     public DataSource(int id, String name, String description, Timestamp system_date, Set<String> attributes) {
-        this.id = id;
         this.name = name;
         this.description = description;
         this.system_date = system_date;
         this.attributes = attributes;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {

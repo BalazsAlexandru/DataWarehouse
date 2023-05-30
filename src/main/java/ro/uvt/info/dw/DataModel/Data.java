@@ -12,9 +12,9 @@ import java.util.Map;
 public class Data {
 
     @PrimaryKey
-    private int assetId;
-    private int dataSourceId;
-    private Date businessDate;
+    private String assetId;
+    private String dataSourceId;
+    private Timestamp businessDate;
     private Timestamp systemDate;
     private Map<String, Double> valuesDouble;
     private Map<String, Integer> valuesInt;
@@ -23,7 +23,7 @@ public class Data {
     public Data() {
     }
 
-    public Data(int assetId, int dataSourceId, Date businessDate, Timestamp systemDate, Map<String, Double> valuesDouble, Map<String, Integer> valuesInt, Map<String, String> valuesText) {
+    public Data(String assetId, String dataSourceId, Timestamp businessDate, Timestamp systemDate, Map<String, Double> valuesDouble, Map<String, Integer> valuesInt, Map<String, String> valuesText) {
         this.assetId = assetId;
         this.dataSourceId = dataSourceId;
         this.businessDate = businessDate;
@@ -33,27 +33,34 @@ public class Data {
         this.valuesText = valuesText;
     }
 
-    public int getAssetId() {
+    public Data(String assetId, String dataSourceId, Timestamp businessDate, Timestamp systemDate) {
+        this.assetId = assetId;
+        this.dataSourceId = dataSourceId;
+        this.businessDate = businessDate;
+        this.systemDate = systemDate;
+    }
+
+    public String getAssetId() {
         return assetId;
     }
 
-    public void setAssetId(int assetId) {
+    public void setAssetId(String assetId) {
         this.assetId = assetId;
     }
 
-    public int getDataSourceId() {
+    public String getDataSourceId() {
         return dataSourceId;
     }
 
-    public void setDataSourceId(int dataSourceId) {
+    public void setDataSourceId(String dataSourceId) {
         this.dataSourceId = dataSourceId;
     }
 
-    public Date getBusinessDate() {
+    public Timestamp getBusinessDate() {
         return businessDate;
     }
 
-    public void setBusinessDate(Date businessDate) {
+    public void setBusinessDate(Timestamp businessDate) {
         this.businessDate = businessDate;
     }
 

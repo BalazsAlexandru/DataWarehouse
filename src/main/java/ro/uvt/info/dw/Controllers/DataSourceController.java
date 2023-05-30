@@ -21,7 +21,7 @@ public class DataSourceController {
     }
 
     @GetMapping("/get-source-by-ids/{id}")
-    public List<DataSource> getSourceById(@PathVariable List<Integer> ids) {
+    public List<DataSource> getSourceById(@PathVariable List<String> ids) {
         List<DataSource> sourceFetchedList = dataSourceRepository.findAllById(ids);
         return sourceFetchedList;
     }
@@ -34,7 +34,7 @@ public class DataSourceController {
     }
 
     @DeleteMapping("/delete-source-by-id/{id}")
-    public void deletesourceById(@PathVariable("id") Integer id) {
+    public void deletesourceById(@PathVariable("id") String id) {
         dataSourceRepository.deleteById(id);
         System.out.println("Deleted source entry with id: " + id);
     }
